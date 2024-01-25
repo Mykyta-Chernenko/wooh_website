@@ -5,7 +5,7 @@ import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAbGuf-qffploA92w-q8yShjwW6whQXIx0",
-  authDomain: "friending-web.firebaseapp.com",
+  authDomain: "wooh.app",
   projectId: "friending-web",
   storageBucket: "friending-web.appspot.com",
   messagingSenderId: "301794036815",

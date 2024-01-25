@@ -5,6 +5,7 @@
     import AlternativeBlock from "../components/AlternativeBlock.svelte";
     import DifferenceBlock from "../components/DifferenceBlock.svelte";
 
+    export let inviteCode;
     let city; // city is undefined until we retrieve the location
 
     let activeTab = 'pain'
@@ -61,9 +62,6 @@
 
 
     function goToRegister() {
-        const inviteCode = new URLSearchParams(window.location.search).get(
-            "invite_code"
-        );
         if (inviteCode) {
             navigate("/register?invite_code=" + inviteCode);
         } else {
@@ -108,7 +106,7 @@
                on:click|preventDefault={scrollIntoView}>difference</a>
         </div>
         <div class="header-btn">
-            <button class="btn" on:click={goToRegister}>find now</button>
+            <button class="btn" on:click={goToRegister}>sign up</button>
         </div>
     </div>
     <div class="content-wrapper">
@@ -120,7 +118,8 @@
                 <div class="tag" style="background: #CEF7CF; border-color: #8FDB91;">1 Person per Week</div>
             </div>
             <h1>Find your Local International Friends in {city}</h1>
-            <button class="btn" on:click={goToRegister}>find now</button>
+            <button class="btn" on:click={goToRegister}>sign up</button>
+            <div class="grey-text">Launching soon</div>
         </div>
         <div class="header-image-wrapper">
             <img src="/assets/images/header_banner.png" alt="phone with notification to meet a friend"/>
@@ -142,7 +141,7 @@
                     <div class="tag" style="background: #CEF7CF; border-color: #8FDB91;">1 Person per Week</div>
                 </div>
                 <h1 class="footer-title">Ready to Find New International Friends in {city}?</h1>
-                <button class="btn" on:click={goToRegister}>find now</button>
+                <button class="btn" on:click={goToRegister}>sign up</button>
             </div>
         </div>
 
@@ -318,6 +317,16 @@
         background: #FBE3E3;
         border-radius: 30px;
         z-index: -3;
+    }
+
+    .grey-text {
+        margin-top: 8px;
+        color: rgba(0, 0, 0, 0.35);
+        font-size: 14px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.28px;
+        word-wrap: break-word
     }
 
 

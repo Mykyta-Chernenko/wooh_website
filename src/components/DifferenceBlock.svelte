@@ -9,7 +9,7 @@
     <h1>A Fresh Take on Finding Friends</h1>
 
     <div class="card-container">
-        <h2>People are <span class="tag red">Random</span> in other Apps?</h2>
+        <h2><span class="tag red">Locals</span> are hard to connect with?</h2>
         <img class="first-image" style="margin:20px" src="/assets/images/random_people.png" alt="random people">
         <h2 class="second-text">We are a <span class="tag purple">community</span> of Expats in Berlin, who are open to friendship.</h2>
     </div>

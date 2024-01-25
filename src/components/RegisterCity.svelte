@@ -7,6 +7,7 @@
     let loading = false;
     const BERLIN = 'berlin'
     const ANOTHER = 'another city'
+    let ipCity = undefined;
     let selectedCity = undefined;
     let selectedAreas = new Set();
     const areas = [
@@ -53,7 +54,7 @@
 
     const selectOption = (option) => {
         selectedCityOption = option;
-        selectedCity = selectedCityOption.toLowerCase() === BERLIN ? BERLIN : ""
+        selectedCity = selectedCityOption.toLowerCase() === BERLIN ? BERLIN : (ipCity || "")
         selectedAreas = new Set()
     };
 
@@ -68,6 +69,7 @@
             if (response.ok) {
                 const data = await response.json();
                 isGermany = data.country === 'DE';
+                ipCity = data.city
             } else {
                 isGermany = false;
             }

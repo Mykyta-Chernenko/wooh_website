@@ -216,7 +216,7 @@
                 <div class="instruction-line">
                     <div class="icon">3</div>
                     <div class="instruction-text" style="margin-left: 3px">Receive an email to join the WOOH
-                        Community.
+                        App.
                     </div>
                 </div>
             </div>

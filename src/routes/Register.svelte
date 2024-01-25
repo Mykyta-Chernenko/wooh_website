@@ -17,7 +17,7 @@
     onMount(() => {
         auth.onAuthStateChanged(async (firebaseUser) => {
             if (firebaseUser) {
-                step.set(8);
+                step.set(2);
             } else {
                 step.set(0)
             }

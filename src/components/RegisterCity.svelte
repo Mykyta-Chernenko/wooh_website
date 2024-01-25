@@ -54,6 +54,7 @@
 
     const selectOption = (option) => {
         selectedCityOption = option;
+        console.log(selectedCityOption, ipCity)
         selectedCity = selectedCityOption.toLowerCase() === BERLIN ? BERLIN : (ipCity || "")
         selectedAreas = new Set()
     };
@@ -73,9 +74,7 @@
             } else {
                 isGermany = false;
             }
-            if (isGermany && !selectedCity){
-                selectOption(BERLIN)
-            }
+
             const docRef = doc(collection(db, 'users'), auth.currentUser.uid);
             const docSnap = await getDoc(docRef);
 
@@ -85,6 +84,12 @@
                 }
                 selectedAreas = new Set(docSnap.data().areas || []);
             }
+            if (selectedCity === BERLIN || (isGermany && !selectedCity)) {
+                selectOption(BERLIN)
+            } else if (!selectedCity) {
+                selectOption(ANOTHER)
+            }
+
         } catch (error) {
             console.error('Error fetching user data:', error);
         }

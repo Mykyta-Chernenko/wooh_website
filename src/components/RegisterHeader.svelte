@@ -1,23 +1,23 @@
 <script>
     import {get} from 'svelte/store';
 
-    import {step} from '../stores/stepStore';
-    import {auth} from "../firebase.js";
+    import {signOut, step} from '../stores/stepStore';
+    import {tracking} from "../tracking.js";
 
-    const totalSteps = 6;
-
-    function goBack() {
+    async function goBack() {
+        tracking.track("OnboardingGoBack", {currentStep: get(step)});
         if (get(step) === 0) {
-            window.location.href = '/';
-        } else {
-            step.update(step => step - 1);
+            const inviteCode = new URLSearchParams(window.location.search).get(
+                "invite_code"
+            )
+            window.location.href = '/' + inviteCode || '';
+        } else if (get(step) === 2) {
+            await signOut()
         }
+        step.update(step => step - 1);
     }
 
-    function signOut() {
-        auth.signOut();
-        step.set(0); // Return to step 1
-    }
+
 </script>
 <style>
     .nav-bar {
@@ -84,6 +84,6 @@
                   fill="black"/>
         </svg>
     </div>
-    <div class="back-icon" on:click={signOut} on:keypress={signOut}></div>
+    <div class="back-icon"></div>
 
 </div>

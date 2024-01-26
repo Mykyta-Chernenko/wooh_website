@@ -3,6 +3,7 @@
     import {collection, doc, getDoc, setDoc} from 'firebase/firestore';
     import {auth, db} from '../firebase.js';
     import {nextStep} from "../stores/stepStore.js";
+    import {tracking} from "../tracking.js";
 
     let loading = false;
     let selectedHobbies = new Set();
@@ -13,10 +14,9 @@
         "👗 Fashion",
         "🧘 Health",
         "✈️ Travel",
-        "📚 Reading",
         "🚴 Cycling",
         "🍷 Wine",
-        "📚 Books",
+        "📚 Reading",
         "🎮 Gaming",
         "🎥 Films",
         "🏋️ Fitness",
@@ -38,7 +38,7 @@
     const toggleHobby = (hobby) => {
         if (selectedHobbies.has(hobby)) {
             selectedHobbies.delete(hobby);
-        } else if (selectedHobbies.size < 3) {
+        } else if (selectedHobbies.size < 10) {
             selectedHobbies.add(hobby);
         }
         selectedHobbies = new Set(selectedHobbies);
@@ -46,6 +46,7 @@
 
 
     onMount(async () => {
+        tracking.track("OnboardingHobbiesLoaded");
         loading = true;
         try {
             const docRef = doc(collection(db, 'users'), auth.currentUser.uid);
@@ -55,19 +56,20 @@
                 selectedHobbies = new Set(docSnap.data().hobbies || []);
             }
         } catch (error) {
-            console.error('Error fetching user data:', error);
+            tracking.track("OnboardingHobbiesError", {error: JSON.stringify(error)});
         }
         loading = false;
     });
 
     const next = async () => {
+        tracking.track("OnboardingHobbiesNext", {hobbies});
         try {
             await setDoc(doc(collection(db, 'users'), auth.currentUser.uid), {
                 hobbies: Array.from(selectedHobbies)
             }, {merge: true});
             nextStep()
         } catch (error) {
-            console.error('Error saving selection:', error);
+            tracking.track("OnboardingHobbiesError", {error: JSON.stringify(error)});
         }
     };
     $: buttonEnabled = selectedHobbies.size > 0
@@ -76,26 +78,26 @@
 
 
 <div class="content-box">
-    <div class="center">
-        <div class="question-container">
-            <div class="onboarding-h1">What are your greatest interests?</div>
-        </div>
-        <div class="question-container hobby">
-            <div class="question">Choose 1-3 hobbies:</div>
-            <div class="option-box">
-                {#each hobbies as hobby}
-                    <div on:click={() => toggleHobby(hobby)} on:keypress={() => toggleHobby(hobby)}
-                         class="option {selectedHobbies.has(hobby) ? 'selected' : ''}">
-                        <div class="option-text">{hobby}</div>
-                    </div>
-                {/each}
+    <form on:submit|preventDefault={next}>
+        <div class="center">
+            <div class="question-container">
+                <div class="onboarding-h1">What are your greatest interests?</div>
+            </div>
+            <div class="question-container hobby">
+                <div class="question">Choose 1-10 hobbies:</div>
+                <div class="option-box">
+                    {#each hobbies as hobby}
+                        <div on:click={() => toggleHobby(hobby)} on:keypress={() => toggleHobby(hobby)}
+                             class="option {selectedHobbies.has(hobby) ? 'selected' : ''}">
+                            <div class="option-text">{hobby}</div>
+                        </div>
+                    {/each}
+                </div>
             </div>
         </div>
 
-
-    </div>
-
-    <button class="btn next-button" on:click={next} disabled={!buttonEnabled || loading}>next</button>
+        <button class="btn next-button" disabled={!buttonEnabled || loading}>next</button>
+    </form>
 </div>
 
 <style>

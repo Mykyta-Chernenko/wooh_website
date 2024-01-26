@@ -4,7 +4,7 @@
 
 <div class="block-container" id="alternative">
     <div class="tag">
-        <div class="text">Alternative</div>
+        <div class="text uppercase">Alternative</div>
     </div>
     <h1>How about WOOH Way?</h1>
 
@@ -68,6 +68,12 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+    }
+
+    @media (max-width: 600px) {
+        .block-container{
+            margin-top: 0;
+        }
     }
 
 

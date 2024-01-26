@@ -2,13 +2,13 @@
     import {onMount} from "svelte";
     import {collection, doc, getDoc} from "firebase/firestore";
     import {auth, db} from "../firebase.js";
+    import {tracking} from "../tracking.js";
 
-    let loading = false
     let inviteLink = ""
 
 
     onMount(async () => {
-        loading = true
+        tracking.track("OnboardingWaitlistLoaded");
         try {
             const docRef = doc(collection(db, "users"), auth.currentUser.uid);
             const docSnap = await getDoc(docRef);
@@ -16,13 +16,13 @@
             const code = docSnap.data().invite_code || auth.currentUser.uid.slice(auth.currentUser.uid.length - 6);
             inviteLink = `${host}/${code}`;
         } catch (error) {
-            console.error("Error fetching user data:", error);
+            tracking.track("OnboardingWaitlistError", {error: JSON.stringify(error)});
         }
-        loading = false;
     });
 
 
     function copyInviteLink() {
+        tracking.track("OnboardingWaitlistLinkCopied", {inviteLink});
         navigator.clipboard.writeText(inviteLink)
             .then(() => alert('Your invite link copied to clipboard!'))
             .catch(err => console.error('Error copying invite link:', err));

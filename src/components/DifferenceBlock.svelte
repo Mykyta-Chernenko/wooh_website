@@ -4,33 +4,37 @@
 
 <div class="block-container" id="difference">
     <div class="block-tag">
-        <div class="text">Difference</div>
+        <div class="text uppercase">Difference</div>
     </div>
     <h1>A Fresh Take on Finding Friends</h1>
 
     <div class="card-container">
         <h2><span class="tag red">Locals</span> are hard to connect with?</h2>
         <img class="first-image" style="margin:20px" src="/assets/images/random_people.png" alt="random people">
-        <h2 class="second-text">We are a <span class="tag purple">community</span> of Expats in Berlin, who are open to friendship.</h2>
+        <h2 class="second-text">We are a <span class="tag purple">community</span> of Expats in Berlin, who are open to
+            friendship.</h2>
     </div>
     <div class="card-container">
         <h2>Annoyed with <span class="tag red">Endless Swipes</span>?</h2>
         <img class="second-image" style="margin:20px" src="/assets/images/weekly_match.png" alt="weekly match">
-        <h2 class="second-text">Get only <span class="tag green">1 tailored friend</span> per week.</h2>
+        <h2 class="second-text">Get only <span class="tag green">1 new friend</span> per week to meet based on your
+            Interests.</h2>
     </div>
     <div class="card-container">
         <h2>Annoyed with <span class="tag red">Matching by Photo?</span></h2>
-        <div class="profile-card">
-            <div class="emoji-container">🧑🏽‍🦱</div>
-            <h2 class="profile-question">Do you want to Meet with Daniel?</h2>
-            <p class="profile-origin">from 🇪🇸 Spain</p>
-            <button class="action-button">Yes, continue</button>
-        </div>
-        <h2 class="second-text">See Friend’s photo only after both of you accepted each other's <span class="tag purple">Values</span>.</h2>
+        <img class="third-image" style="margin:20px" src="/assets/images/value_match.png" alt="weekly match">
+        <!--        <div class="profile-card">-->
+        <!--            <div class="emoji-container">🧑🏽‍🦱</div>-->
+        <!--            <h2 class="profile-question">Do you want to Meet with Daniel?</h2>-->
+        <!--            <p class="profile-origin">from 🇪🇸 Spain</p>-->
+        <!--            <button class="action-button">Yes, continue</button>-->
+        <!--        </div>-->
+        <h2 class="second-text">See Friend’s photo only after both of you accepted each other's <span
+                class="tag purple">Values</span>.</h2>
     </div>
     <div class="card-container">
         <h2>Tired of <span class="tag red">Empty Chats</span></h2>
-        <img class="third-image" style="margin:20px" src="/assets/images/process.png" alt="weekly match">
+        <img class="forth-image" style="margin:20px" src="/assets/images/process.png" alt="weekly match">
         <h2 class="second-text">We skip chatting, you can only <span class="tag blue">meet IRL</span>.</h2>
     </div>
 
@@ -44,6 +48,12 @@
         flex-direction: column;
         align-items: center;
         z-index: 2;
+    }
+
+    @media (max-width: 600px) {
+        .block-container {
+            margin-top: 0;
+        }
     }
 
     .block-tag {
@@ -87,7 +97,12 @@
         box-sizing: border-box;
         text-align: center;
         margin-bottom: 5vh;
+    }
 
+    @media (max-width: 600px) {
+        .card-container {
+            margin-bottom: 10px;
+        }
     }
 
     .profile-card {
@@ -162,31 +177,48 @@
         background: #CEF7CF;
         border: 1px solid #8FDB91;
     }
-    .second-image{
-        width: 60%;
+
+    .first-image {
+        width: 40%;
     }
-    @media (max-width: 600px) {
-        .second-image {
-            width: 100%;
-        }
-    }
-    .first-image{
-        width: 80%;
-    }
+
     @media (max-width: 600px) {
         .first-image {
+            width: 70%;
+        }
+    }
+
+    .second-image {
+        width: 30%;
+    }
+
+    @media (max-width: 600px) {
+        .second-image {
+            width: 60%;
+        }
+    }
+
+
+    .third-image {
+        width: 30%;
+    }
+
+    @media (max-width: 600px) {
+        .third-image {
+            width: 60%;
+        }
+    }
+
+    .forth-image {
+        width: 70%;
+    }
+
+    @media (max-width: 600px) {
+        .forth-image {
             width: 100%;
         }
     }
 
-    .third-image{
-        width: 70%;
-    }
-    @media (max-width: 600px) {
-        .third-image {
-            width: 100%;
-        }
-    }
     @media (min-width: 600px) {
         .second-text {
             width: 70%;

@@ -62,13 +62,13 @@
 
 
     .pain-tag {
+        z-index: -1;
         display: inline-block;
         background: #FBE3E3;
         border-radius: 8px;
         border: 1px solid #F9D0D0;
         padding: 2px 1px;
         margin: -6px 0;
-        z-index: -1;
         rotate: -1deg;
     }
 
@@ -153,6 +153,7 @@
         position: relative;
         font-family: 'Space Grotesk', sans-serif;
         font-size: 2rem;
+        margin-bottom: 15vh;
     }
 
 
@@ -161,7 +162,7 @@
         background: #C4E5FF;
         border-radius: 8px;
         border: 1px solid #99CFF9;
-        padding: 2px 1px;
+        padding: 0px 1px;
         margin: -6px 0;
         z-index: -1;
         rotate: -1deg;
@@ -175,16 +176,17 @@
 
     /* Positioning the emojis based on the image */
     .emoji-bottom.one { /* Assuming this is the flashlight emoji */
-        top: -1rem;
+        top: -3rem;
         right: 1rem;
     }
 
     .emoji-bottom.two { /* Assuming this is the eyes emoji */
+        top: -2rem;
         left: 2rem;
     }
 
     .emoji-bottom.three { /* Assuming this is the magnifying glass emoji */
-        bottom: -2rem;
+        bottom: -5rem;
         left: 30%;
     }
 

@@ -13,13 +13,14 @@
     import RegisterPurpose from "../components/RegisterPurpose.svelte";
     import RegisterSocial from "../components/RegisterSocial.svelte";
     import RegisterWaitlist from "../components/RegisterWaitlist.svelte";
+    import {tracking} from "../tracking.js";
 
     onMount(() => {
+        tracking.track("OnboardingLoaded");
         auth.onAuthStateChanged(async (firebaseUser) => {
+            tracking.track("OnboardingAuthStateChanged", {firebaseUser: JSON.stringify(firebaseUser)});
             if (firebaseUser) {
-                step.set(2);
-            } else {
-                step.set(0)
+                step.set(1);
             }
         });
     });

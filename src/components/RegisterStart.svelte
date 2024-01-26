@@ -1,5 +1,11 @@
 <script>
     import {nextStep} from "../stores/stepStore.js";
+    import {onMount} from "svelte";
+    import {tracking} from "../tracking.js";
+
+    onMount(()=>{
+        tracking.track("OnboardingStartLoaded");
+    })
 </script>
 
 <style>
@@ -31,7 +37,7 @@
         display: flex;
         align-items: center;
         gap: 8px;
-        margin-bottom: 30px;
+        margin-bottom: 35px;
         line-height: 16px;
         letter-spacing: 0.26px;
     }

@@ -1,15 +1,28 @@
 <script>
-    import {onMount, tick} from "svelte";
     import {navigate} from "svelte-routing";
     import PainBlock from "../components/PainBlock.svelte";
     import AlternativeBlock from "../components/AlternativeBlock.svelte";
     import DifferenceBlock from "../components/DifferenceBlock.svelte";
+    import {tracking} from "../tracking.js";
+    import {onMount, tick} from "svelte";
 
     export let inviteCode;
     let city; // city is undefined until we retrieve the location
 
     let activeTab = 'pain'
     onMount(async () => {
+        //     function resize() {
+        //         var baseWidth = 1440;
+        //         var scaleFactor = window.innerWidth / baseWidth;
+        //         document.documentElement.style.zoom = scaleFactor;
+        //     }
+        //
+        //     // Event listener for resizing the window
+        //     window.addEventListener('resize', resize);
+        //
+        //     // Initial resize when the document loads
+        //     document.addEventListener('DOMContentLoaded', resize);
+        //
         const response = await fetch("https://ipinfo.io/json?token=d2feb4f693903d");
         if (response.ok) {
             const data = await response.json();
@@ -21,12 +34,14 @@
         } else {
             city = "your city";
         }
+        tracking.track("HomeLoaded", {city, inviteCode});
         await tick()
 
         const observerCallback = (entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     activeTab = entry.target.id;
+                    tracking.track("HomeActiveTabChange", {activeTab});
                 }
             });
         };
@@ -52,6 +67,7 @@
     });
 
     function scrollIntoView({target}) {
+        tracking.track("HomeMenuClicked", {target: target.getAttribute('href')});
         const el = document.querySelector(target.getAttribute('href'));
         if (!el) return;
         activeTab = el.id;
@@ -62,6 +78,7 @@
 
 
     function goToRegister() {
+        tracking.track("HomeSignUpClicked");
         if (inviteCode) {
             navigate("/register?invite_code=" + inviteCode);
         } else {
@@ -270,7 +287,7 @@
     }
 
     .footer-title {
-        margin: 5vw 0;
+        margin: 3vh 1vw;
         max-width: 70%;
     }
 
@@ -341,7 +358,7 @@
 
         .footer-title {
             max-width: 100%;
-            margin: 5vh 0;
+            margin: 2vh 0;
         }
     }
 

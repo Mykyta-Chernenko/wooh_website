@@ -2,10 +2,23 @@
     import {GoogleAuthProvider, OAuthProvider, signInWithPopup} from "firebase/auth";
     import {auth, db} from "../firebase.js";
     import {doc, setDoc} from "firebase/firestore";
+    import {tracking} from "../tracking.js";
+    import {onMount} from "svelte";
+    import {nextStep} from "../stores/stepStore.js";
 
+    onMount(()=>{
+        tracking.track("OnboardingAuthLoaded");
+        if(auth.currentUser) {
+            nextStep()
+        }
+    })
     async function commonAuth() {
         const user = auth.currentUser;
-        await setDoc(doc(db, "users", user.uid), {
+        tracking.identify(user.uid);
+        tracking.alias(user.uid);
+        tracking.track("OnboardingAuthFinished");
+
+        const res = await setDoc(doc(db, "users", user.uid), {
             user_id: user.uid,
             email: user.email
         }, {merge: true})
@@ -17,33 +30,34 @@
                 invited_by: inviteCode,
             }, {merge: true})
         }
+        nextStep()
     }
 
     async function signInWithGoogle() {
+        tracking.track("OnboardingAuthGoogleInitiated");
         const provider = new GoogleAuthProvider();
         provider.addScope("email")
-        provider.addScope("profile")
         auth.useDeviceLanguage();
         try {
             const result = await signInWithPopup(auth, provider);
-            console.log(result)
+            tracking.track("OnboardingAuthGoogleResult", {result: JSON.stringify(result)});
             await commonAuth()
         } catch (error) {
-            console.error("Error signing in with Google", error);
+            tracking.track("OnboardingAuthGoogleError", {error: JSON.stringify(error)});
         }
     }
 
     async function signInWithApple() {
+        tracking.track("OnboardingAuthAppleInitiated");
         const provider = new OAuthProvider('apple.com');
         provider.addScope('email');
-        provider.addScope('name');
         auth.useDeviceLanguage();
         try {
             const result = await signInWithPopup(auth, provider);
-            console.log(result);
+            tracking.track("OnboardingAuthAppleResult", {result: JSON.stringify(result)});
             await commonAuth()
         } catch (error) {
-            console.error("Error signing in with Apple", error);
+            tracking.track("OnboardingAuthAppleError", {error: JSON.stringify(error)});
         }
     }
 </script>

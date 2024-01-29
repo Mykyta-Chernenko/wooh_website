@@ -6,7 +6,7 @@
     <div class="block-tag">
         <div class="text uppercase">Difference</div>
     </div>
-    <h1>A Fresh Take on Finding Friends</h1>
+    <h1>A Fresh Approach on Finding Friends</h1>
 
     <div class="card-container">
         <h2><span class="tag red">Locals</span> are hard to connect with?</h2>
@@ -23,12 +23,6 @@
     <div class="card-container">
         <h2>Annoyed with <span class="tag red">Matching by Photo?</span></h2>
         <img class="third-image" style="margin:20px" src="/assets/images/value_match.png" alt="weekly match">
-        <!--        <div class="profile-card">-->
-        <!--            <div class="emoji-container">🧑🏽‍🦱</div>-->
-        <!--            <h2 class="profile-question">Do you want to Meet with Daniel?</h2>-->
-        <!--            <p class="profile-origin">from 🇪🇸 Spain</p>-->
-        <!--            <button class="action-button">Yes, continue</button>-->
-        <!--        </div>-->
         <h2 class="second-text">See Friend’s photo only after both of you accepted each other's <span
                 class="tag purple">Values</span>.</h2>
     </div>
@@ -103,51 +97,6 @@
         .card-container {
             margin-bottom: 10px;
         }
-    }
-
-    .profile-card {
-        width: 306px;
-        border: 1px solid #DDDDDD;
-        border-radius: 16px;
-        display: flex;
-        flex-direction: column;
-        text-align: center;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-        margin: 5vh 0;
-    }
-
-    .profile-question {
-        color: black;
-        font-size: 1.4rem;
-        line-height: 1.4rem;
-        max-width: 70%;
-        text-align: center;
-    }
-
-    .profile-origin {
-        color: black;
-        text-transform: uppercase;
-    }
-
-    .action-button {
-        background: #F5F5F5;
-        border-radius: 8px;
-        color: black;
-        text-transform: uppercase;
-        padding: 11px 30px;
-        border: none;
-        margin-top: 20px;
-    }
-
-    .emoji-container {
-        color: black;
-        font-size: 56px;
-        font-weight: 500;
-        text-transform: uppercase;
-        padding: 15.5px 23px;
-        border-radius: 20px;
     }
 
     .tag {

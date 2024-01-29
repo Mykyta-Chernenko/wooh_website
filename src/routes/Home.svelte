@@ -151,7 +151,7 @@
             <div class="footer-bg-2"></div>
             <div class="footer-bg-3"></div>
             <div class="footer-conter">
-                <div class="tag-container">
+                <div class="tag-container" style="margin: 0 -10px">
                     <div class="tag" style="background: #FBE3E3; border-color: #F9D0D0;">No Swipes</div>
                     <div class="tag" style="background: #C4E5FF; border-color: #99CFF9;">Only IRL Meetings</div>
                     <div class="tag" style="background: #CCC4FF; border-color: #A693F3;">Expat Community</div>
@@ -277,6 +277,7 @@
         width: 100%;
     }
 
+
     .footer {
         transform: rotate(0.994deg);
         position: relative;
@@ -347,9 +348,12 @@
     }
 
 
-    @media (max-width: 768px) {
+    @media (max-width: 600px) {
+        .header-image-wrapper img {
+            width: 95vw;
+        }
         .footer {
-            width: 90vw;
+            width: 95vw;
         }
 
         .footer-conter {

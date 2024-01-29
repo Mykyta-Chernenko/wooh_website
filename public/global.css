@@ -19,7 +19,6 @@ body {
     font-family: "Space Grotesk", sans-serif;
     box-sizing: border-box;
     background: #F5F5F5;
-    font-size: 1rem;
     display: flex;
     justify-content: center;
 }
@@ -27,8 +26,8 @@ body {
 h1 {
     color: #000;
     text-align: center;
-    font-size: 4.5rem;
-    line-height: 4.5rem;
+    font-size: 64px;
+    line-height: 70px;
     font-style: normal;
     font-weight: 500;
     padding: 0.5vh;
@@ -38,22 +37,21 @@ h1 {
 h2 {
     margin: 0;
     color: #000;
-    font-size: 2.5rem;
+    font-size: 46px;
     font-style: normal;
     font-weight: 500;
-    line-height: 2.5rem;
+    line-height: 50px;
 }
 
-@media (max-width: 1038px) {
+@media (max-width: 600px) {
     h1 {
-        font-size: 3.5rem;
-        line-height: 3.5rem
+        font-size: 35px;
+        line-height: 33px;
     }
 
     h2 {
-        font-size: 2rem;
-        line-height: 2rem
-
+        font-size: 28px;
+        line-height: 30px;
     }
 }
 

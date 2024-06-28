@@ -1,90 +1,95 @@
 <script>
-    import {navigate} from "svelte-routing";
-    import PainBlock from "../components/PainBlock.svelte";
-    import AlternativeBlock from "../components/AlternativeBlock.svelte";
-    import DifferenceBlock from "../components/DifferenceBlock.svelte";
-    import {tracking} from "../tracking.js";
-    import {onMount, tick} from "svelte";
+  import {navigate} from "svelte-routing";
+  import PainBlock from "../components/PainBlock.svelte";
+  import AlternativeBlock from "../components/AlternativeBlock.svelte";
+  import DifferenceBlock from "../components/DifferenceBlock.svelte";
+  import {tracking} from "../tracking.js";
+  import {onMount, tick} from "svelte";
 
-    export let inviteCode;
-    let city; // city is undefined until we retrieve the location
+  export let inviteCode;
+  let city; // city is undefined until we retrieve the location
 
-    let activeTab = 'pain'
-    onMount(async () => {
-        //     function resize() {
-        //         var baseWidth = 1440;
-        //         var scaleFactor = window.innerWidth / baseWidth;
-        //         document.documentElement.style.zoom = scaleFactor;
-        //     }
-        //
-        //     // Event listener for resizing the window
-        //     window.addEventListener('resize', resize);
-        //
-        //     // Initial resize when the document loads
-        //     document.addEventListener('DOMContentLoaded', resize);
-        //
-        const response = await fetch("https://ipinfo.io/json?token=d2feb4f693903d");
-        if (response.ok) {
-            const data = await response.json();
-            if (data.country === 'DE') {
-                city = "Berlin"
-            } else {
-                city = "your city";
-            }
+  let activeTab = 'pain'
+  onMount(async () => {
+    // function resize() {
+    //     var baseWidth = 1440;
+    //     var scaleFactor = window.innerWidth / baseWidth;
+    //     document.documentElement.style.zoom = scaleFactor;
+    // }
+    //
+    // // Event listener for resizing the window
+    // window.addEventListener('resize', resize);
+    //
+    // // Initial resize when the document loads
+    // document.addEventListener('DOMContentLoaded', resize);
+
+    try {
+      const response = await fetch("https://ipinfo.io/json?token=d2feb4f693903d");
+      if (response.ok) {
+        const data = await response.json();
+        if (data.country === 'DE') {
+          city = "Berlin"
         } else {
-            city = "your city";
+          city = "Your City";
         }
-        tracking.track("HomeLoaded", {city, inviteCode});
-        await tick()
+      } else {
+        city = "Your City";
+      }
+    } catch {
+      city = "Your City";
+    }
+    tracking.track("HomeLoaded", {city, inviteCode});
+    await tick()
 
-        const observerCallback = (entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    activeTab = entry.target.id;
-                    tracking.track("HomeActiveTabChange", {activeTab});
-                }
-            });
-        };
+    const observerCallback = (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          activeTab = entry.target.id;
+          tracking.track("HomeActiveTabChange", {activeTab});
+        }
+      });
+    };
 
-        const observerOptions = {
-            root: null,
-            threshold: 0.2,
-        };
-        const observer = new IntersectionObserver(observerCallback, observerOptions);
+    const observerOptions = {
+      root: null,
+      threshold: 0.2,
+    };
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
 
 
-        const targets = ['pain', 'alternative', 'difference'].map(id => document.getElementById(id));
+    const targets = ['pain', 'alternative', 'difference'].map(id => document.getElementById(id));
 
-        targets.forEach(target => {
-            if (target) observer.observe(target);
-        });
-
-        return () => {
-            targets.forEach(target => {
-                if (target) observer.unobserve(target);
-            });
-        };
+    targets.forEach(target => {
+      if (target) observer.observe(target);
     });
 
-    function scrollIntoView({target}) {
-        tracking.track("HomeMenuClicked", {target: target.getAttribute('href')});
-        const el = document.querySelector(target.getAttribute('href'));
-        if (!el) return;
-        activeTab = el.id;
-        el.scrollIntoView({
-            behavior: 'smooth'
-        });
-    }
+    return () => {
+      targets.forEach(target => {
+        if (target) observer.unobserve(target);
+      });
+    };
+  });
+
+  function scrollIntoView({target}) {
+    tracking.track("HomeMenuClicked", {target: target.getAttribute('href')});
+    const el = document.querySelector(target.getAttribute('href'));
+    if (!el) return;
+    activeTab = el.id;
+    el.scrollIntoView({
+      behavior: 'smooth'
+    });
+  }
 
 
-    function goToRegister() {
-        tracking.track("HomeSignUpClicked");
-        if (inviteCode) {
-            navigate("/register?invite_code=" + inviteCode);
-        } else {
-            navigate("/register");
-        }
-    }
+  function goToRegisterIPhone() {
+    tracking.track("HomeSignUpClickedIPhone");
+    window.location.href = "https://apps.apple.com/id/app/id6483865734";
+  }
+
+  function goToRegisterAndroid() {
+    tracking.track("HomeSignUpClickedAndroid");
+    window.location.href = "https://play.google.com/store/apps/details?id=com.marakaci.wooh";
+  }
 
 </script>
 
@@ -123,10 +128,10 @@
                on:click|preventDefault={scrollIntoView}>difference</a>
         </div>
         <div class="header-btn">
-            <button class="btn" on:click={goToRegister}>sign up</button>
+            <button href="#top-header" class="btn" on:click={scrollIntoView}>Download</button>
         </div>
     </div>
-    <div class="content-wrapper">
+    <div class="content-wrapper" id="top-header">
         <div class="header-block-wrapper">
             <div class="tag-container">
                 <div class="tag" style="background: #FBE3E3; border-color: #F9D0D0;">No Swipes</div>
@@ -134,9 +139,11 @@
                 <div class="tag" style="background: #CCC4FF; border-color: #A693F3;">Expat Community</div>
                 <div class="tag" style="background: #CEF7CF; border-color: #8FDB91;">1 Person per Week</div>
             </div>
-            <h1>Find your Local International Friends in {city}</h1>
-            <button class="btn" on:click={goToRegister}>sign up</button>
-            <div class="grey-text">Launching soon</div>
+            <h1>A Place To Meet New International Friends In {city}</h1>
+            <div class="row" id="top-buttons">
+                <button class="btn" on:click={goToRegisterAndroid}>Android</button>
+                <button class="btn" on:click={goToRegisterIPhone}>IPhone</button>
+            </div>
         </div>
         <div class="header-image-wrapper">
             <img src="/assets/images/header_banner.png" alt="phone with notification to meet a friend"/>
@@ -158,7 +165,11 @@
                     <div class="tag" style="background: #CEF7CF; border-color: #8FDB91;">1 Person per Week</div>
                 </div>
                 <h1 class="footer-title">Ready to Find New International Friends in {city}?</h1>
-                <button class="btn" on:click={goToRegister}>sign up</button>
+
+                <div class="row">
+                    <button class="btn" on:click={goToRegisterAndroid}>Android</button>
+                    <button class="btn" on:click={goToRegisterIPhone}>IPhone</button>
+                </div>
             </div>
         </div>
 
@@ -198,7 +209,10 @@
             display: none
         }
     }
-
+    .header-btn {
+        display: flex;
+        flex-direction: column;
+    }
     @media (max-width: 1038px) {
         .header-btn {
             display: none;
@@ -222,6 +236,7 @@
 
 
     .tag {
+        font-weight: 500;
         min-width: 100px;
         padding: 8px 16px;
         border-radius: 8px;
@@ -352,6 +367,7 @@
         .header-image-wrapper img {
             width: 95vw;
         }
+
         .footer {
             width: 95vw;
         }

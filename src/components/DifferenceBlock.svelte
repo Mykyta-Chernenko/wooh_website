@@ -9,27 +9,27 @@
     <h1>A Fresh Approach on Finding Friends</h1>
 
     <div class="card-container">
-        <h2><span class="tag red">Locals</span> are hard to connect with?</h2>
+        <h2><span class="difference-tag red">Locals</span> are hard to connect with?</h2>
         <img class="first-image" style="margin:20px" src="/assets/images/random_people.png" alt="random people">
-        <h2 class="second-text">We are a <span class="tag purple">community</span> of Expats in Berlin, who are open to
+        <h2 class="second-text">We are a <span class="difference-tag purple">community</span> of Expats in Berlin, who are open to
             friendship.</h2>
     </div>
     <div class="card-container">
-        <h2>Annoyed with <span class="tag red">Endless Swipes</span>?</h2>
+        <h2>Annoyed with <span class="difference-tag red">Endless Swipes</span>?</h2>
         <img class="second-image" style="margin:20px" src="/assets/images/weekly_match.png" alt="weekly match">
-        <h2 class="second-text">Get only <span class="tag green">1 new friend</span> per week to meet based on your
+        <h2 class="second-text">Get only <span class="difference-tag green">1 new friend</span> per week to meet based on your
             Interests.</h2>
     </div>
     <div class="card-container">
-        <h2>Annoyed with <span class="tag red">Matching by Photo?</span></h2>
+        <h2>Annoyed with <span class="difference-tag red">Matching by Photo?</span></h2>
         <img class="third-image" style="margin:20px" src="/assets/images/value_match.png" alt="weekly match">
         <h2 class="second-text">See Friend’s photo only after both of you accepted each other's <span
-                class="tag purple">Values</span>.</h2>
+                class="difference-tag purple">Values</span>.</h2>
     </div>
     <div class="card-container">
-        <h2>Tired of <span class="tag red">Empty Chats</span></h2>
+        <h2>Tired of <span class="difference-tag red">Empty Chats</span></h2>
         <img class="forth-image" style="margin:20px" src="/assets/images/process.png" alt="weekly match">
-        <h2 class="second-text">We skip chatting, you can only <span class="tag blue">meet IRL</span>.</h2>
+        <h2 class="second-text">We skip chatting, you can only <span class="difference-tag blue">meet IRL</span>.</h2>
     </div>
 
 </div>
@@ -56,9 +56,10 @@
         border: 1px solid #DDDDDD;
         padding: 8px 16px;
         margin-top: 3vh;
+        font-weight: 500;
     }
 
-    .tag {
+    .difference-tag {
         display: inline-block;
         background: #FBE3E3;
         border-radius: 8px;
@@ -69,7 +70,7 @@
         rotate: -1deg;
     }
 
-    .tag {
+    .difference-tag {
         background: white;
         border-radius: 8px;
         border: 1px solid #DDDDDD;
@@ -99,7 +100,7 @@
         }
     }
 
-    .tag {
+    .difference-tag {
         display: inline-block;
         border-radius: 8px;
         padding: 2px 1px;
@@ -107,22 +108,22 @@
         rotate: -1deg;
     }
 
-    .tag.blue {
+    .difference-tag.blue {
         background: #C4E5FF;
         border: 1px solid #99CFF9;
     }
 
-    .tag.red {
+    .difference-tag.red {
         background: #FBE3E3;
         border: 1px solid #F9D0D0;
     }
 
-    .tag.purple {
+    .difference-tag.purple {
         background: #CCC4FF;
         border: 1px solid #A693F3;
     }
 
-    .tag.green {
+    .difference-tag.green {
         background: #CEF7CF;
         border: 1px solid #8FDB91;
     }

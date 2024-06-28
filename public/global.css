@@ -77,6 +77,11 @@ input:disabled {
     color: #ccc;
 }
 
+.row {
+    display: flex;
+    flex-direction: row;
+}
+
 
 .btn {
     background-color: black;
@@ -87,6 +92,8 @@ input:disabled {
     text-transform: uppercase;
     border-radius: 8px;
     font-weight: 500;
+    margin: 3px;
+    min-width: 150px;
 }
 
 .btn:hover {

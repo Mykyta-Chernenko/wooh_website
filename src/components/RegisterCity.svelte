@@ -1,117 +1,121 @@
 <script>
-    import {onMount} from 'svelte';
-    import {collection, doc, getDoc, setDoc} from 'firebase/firestore';
-    import {auth, db} from '../firebase.js';
-    import {nextStep} from "../stores/stepStore.js";
-    import {tracking} from "../tracking.js";
+  import {onMount} from 'svelte';
+  import {collection, doc, getDoc, setDoc} from 'firebase/firestore';
+  import {auth, db} from '../firebase.js';
+  import {nextStep} from "../stores/stepStore.js";
+  import {tracking} from "../tracking.js";
 
-    let loading = false;
-    const BERLIN = 'berlin'
-    const ANOTHER = 'another city'
-    // let ipCity = undefined;
-    let selectedCity = undefined;
-    let selectedAreas = new Set();
-    const areas = [
-        'any',
-        'Mitte',
-        'Neukölln',
-        'Kreuzberg',
-        'Pankow',
-        'Friedrichshain',
-        'Charlottenburg',
-        'Spandau',
-        'Steglitz',
-        'Schöneberg',
-        'Gesundbrunnen',
-        'Wilmersdorf',
-        'Treptow',
-        'Moabit',
-        'Köpenick',
-        'Tiergarten',
-        'other berlin area',
-        '📦 I’m Moving to Berlin Soon',
-    ];
-    const options = [BERLIN, ANOTHER];
+  let loading = false;
+  const BERLIN = 'berlin'
+  const ANOTHER = 'another city'
+  // let ipCity = undefined;
+  let selectedCity = undefined;
+  let selectedAreas = new Set();
+  const areas = [
+    'any',
+    'Mitte',
+    'Neukölln',
+    'Kreuzberg',
+    'Pankow',
+    'Friedrichshain',
+    'Charlottenburg',
+    'Spandau',
+    'Steglitz',
+    'Schöneberg',
+    'Gesundbrunnen',
+    'Wilmersdorf',
+    'Treptow',
+    'Moabit',
+    'Köpenick',
+    'Tiergarten',
+    'other berlin area',
+    '📦 I’m Moving to Berlin Soon',
+  ];
+  const options = [BERLIN, ANOTHER];
 
 
-    const toggleArea = (area) => {
-        if (selectedAreas.has(area)) {
-            selectedAreas.delete(area);
-        } else if (selectedAreas.size < 3) {
-            selectedAreas.add(area);
-        }
-        selectedAreas = new Set(selectedAreas);
-    };
-
-    let isGermany = false
-    let selectedCityOption = undefined
-    $: {
-        if (selectedCity?.toLowerCase() === BERLIN) {
-            selectedCityOption = BERLIN
-        } else {
-            selectedCityOption = ANOTHER
-        }
+  const toggleArea = (area) => {
+    if (selectedAreas.has(area)) {
+      selectedAreas.delete(area);
+    } else if (selectedAreas.size < 3) {
+      selectedAreas.add(area);
     }
+    selectedAreas = new Set(selectedAreas);
+  };
 
-    const selectOption = (option) => {
-        selectedCityOption = option;
-        // selectedCity = selectedCityOption.toLowerCase() === BERLIN ? BERLIN : (ipCity || "")
-        selectedCity = selectedCityOption.toLowerCase() === BERLIN ? BERLIN : ""
-        selectedAreas = new Set()
-        tracking.track("OnboardingCitySelectCityOption", {selectedCityOption, selectedCity});
-    };
+  let isGermany = false
+  let selectedCityOption = undefined
+  $: {
+    if (selectedCity?.toLowerCase() === BERLIN) {
+      selectedCityOption = BERLIN
+    } else {
+      selectedCityOption = ANOTHER
+    }
+  }
 
-    const handleCityInput = (event) => {
-        selectedCity = event.target.value;
-    };
+  const selectOption = (option) => {
+    selectedCityOption = option;
+    // selectedCity = selectedCityOption.toLowerCase() === BERLIN ? BERLIN : (ipCity || "")
+    selectedCity = selectedCityOption.toLowerCase() === BERLIN ? BERLIN : ""
+    selectedAreas = new Set()
+    tracking.track("OnboardingCitySelectCityOption", {selectedCityOption, selectedCity});
+  };
 
-    onMount(async () => {
-        tracking.track("OnboardingCityLoaded");
-        loading = true;
-        try {
-            const response = await fetch("https://ipinfo.io/json?token=d2feb4f693903d");
-            if (response.ok) {
-                const data = await response.json();
-                isGermany = data.country === 'DE';
-                // ipCity = data.city
-            } else {
-                isGermany = false;
-            }
+  const handleCityInput = (event) => {
+    selectedCity = event.target.value;
+  };
 
-            const docRef = doc(collection(db, 'users'), auth.currentUser.uid);
-            const docSnap = await getDoc(docRef);
-
-            if (docSnap.exists()) {
-                if (docSnap.data().city) {
-                    selectedCity = docSnap.data().city;
-                }
-                selectedAreas = new Set(docSnap.data().areas || []);
-            }
-            if (selectedCity === BERLIN || (isGermany && !selectedCity)) {
-                selectOption(BERLIN)
-            } else if (!selectedCity) {
-                selectOption(ANOTHER)
-            }
-
-        } catch (error) {
-            tracking.track("OnboardingCityError", {error: JSON.stringify(error)});
+  onMount(async () => {
+    tracking.track("OnboardingCityLoaded");
+    loading = true;
+    try {
+      try {
+        const response = await fetch("https://ipinfo.io/json?token=d2feb4f693903d");
+        if (response.ok) {
+          const data = await response.json();
+          isGermany = data.country === 'DE';
+          // ipCity = data.city
+        } else {
+          isGermany = false;
         }
-        loading = false;
-    });
+      } catch {
+        isGermany = false;
+      }
 
-    const next = async () => {
-        tracking.track("OnboardingCityNext", {selectedCity, areas});
-        try {
-            await setDoc(doc(collection(db, 'users'), auth.currentUser.uid), {
-                city: selectedCity,
-                areas: Array.from(selectedAreas)
-            }, {merge: true});
-            nextStep()
-        } catch (error) {
-            tracking.track("OnboardingCityError", {error: JSON.stringify(error)});
+      const docRef = doc(collection(db, 'users'), auth.currentUser.uid);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        if (docSnap.data().city) {
+          selectedCity = docSnap.data().city;
         }
-    };
-    $: buttonEnabled = selectedCity?.toLowerCase() === BERLIN ? selectedAreas.size > 0 : selectedCity?.length > 0
+        selectedAreas = new Set(docSnap.data().areas || []);
+      }
+      if (selectedCity === BERLIN || (isGermany && !selectedCity)) {
+        selectOption(BERLIN)
+      } else if (!selectedCity) {
+        selectOption(ANOTHER)
+      }
+
+    } catch (error) {
+      tracking.track("OnboardingCityError", {error: JSON.stringify(error)});
+    }
+    loading = false;
+  });
+
+  const next = async () => {
+    tracking.track("OnboardingCityNext", {selectedCity, areas});
+    try {
+      await setDoc(doc(collection(db, 'users'), auth.currentUser.uid), {
+        city: selectedCity.toLowerCase(),
+        areas: Array.from(selectedAreas)
+      }, {merge: true});
+      nextStep()
+    } catch (error) {
+      tracking.track("OnboardingCityError", {error: JSON.stringify(error)});
+    }
+  };
+  $: buttonEnabled = selectedCity?.toLowerCase() === BERLIN ? selectedAreas.size > 0 : selectedCity?.length > 0
 
 </script>
 

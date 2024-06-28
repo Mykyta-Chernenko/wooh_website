@@ -1,27 +1,49 @@
 <script>
     import {GoogleAuthProvider, OAuthProvider, signInWithPopup} from "firebase/auth";
     import {auth, db} from "../firebase.js";
-    import {doc, setDoc} from "firebase/firestore";
+    import {collection, doc, getDoc, setDoc} from "firebase/firestore";
     import {tracking} from "../tracking.js";
     import {onMount} from "svelte";
-    import {nextStep} from "../stores/stepStore.js";
+    import {nextStep, step, TOTAL_STEPS} from "../stores/stepStore.js";
 
     onMount(()=>{
         tracking.track("OnboardingAuthLoaded");
-        if(auth.currentUser) {
-            nextStep()
+        const loadUser = async () => {
+            if (auth.currentUser) {
+                const docRef = doc(collection(db, "users"), auth.currentUser.uid);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists() && docSnap.data().onboarding_finished) {
+                    tracking.track("OnboardingAuthRedirectingToWaitlist");
+                    step.set(TOTAL_STEPS)
+                }
+                else {
+                    nextStep()
+                }
+            }
         }
+        void loadUser()
     })
     async function commonAuth() {
         const user = auth.currentUser;
         tracking.identify(user.uid);
         tracking.alias(user.uid);
         tracking.track("OnboardingAuthFinished");
+        const docRef = doc(collection(db, 'users'), user.uid);
+        const docSnap = await getDoc(docRef);
 
-        const res = await setDoc(doc(db, "users", user.uid), {
+        if (docSnap.exists()) {
+          await setDoc(doc(db, "users", user.uid), {
             user_id: user.uid,
-            email: user.email
-        }, {merge: true})
+            email: user.email,
+            signed_in_at: new Date().toISOString()
+          }, {merge: true})
+        } else{
+          await setDoc(doc(db, "users", user.uid), {
+            user_id: user.uid,
+            email: user.email,
+            created_at: new Date().toISOString(),
+          }, {merge: true})
+        }
         const inviteCode = new URLSearchParams(window.location.search).get(
             "invite_code"
         )

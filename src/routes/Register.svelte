@@ -1,6 +1,6 @@
 <script>
     import RegisterHeader from "../components/RegisterHeader.svelte";
-    import {auth} from "../firebase.js"; // Your Firebase initialization file // Import Firestore
+    import {auth} from "../firebase.js";
     import {onMount} from "svelte";
     import RegisterStart from "../components/RegisterStart.svelte";
     import RegistrationProgress from "../components/RegistrationProgress.svelte";

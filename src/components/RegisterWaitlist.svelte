@@ -3,10 +3,10 @@
     import {collection, doc, getDoc} from "firebase/firestore";
     import {auth, db} from "../firebase.js";
     import {tracking} from "../tracking.js";
-
+    import InstallButton from './InstallPWA.svelte';
     let inviteLink = ""
 
-
+    let notificationData = ""
     onMount(async () => {
         tracking.track("OnboardingWaitlistLoaded");
         try {
@@ -19,6 +19,41 @@
             tracking.track("OnboardingWaitlistError", {error: JSON.stringify(error)});
         }
     });
+    function askNotificationPermission() {
+      Notification.requestPermission().then(async permission => {
+        if(permission === "granted") {
+          console.log("Notification permission granted.");
+          function urlBase64ToUint8Array(base64String) {
+            var padding = '='.repeat((4 - base64String.length % 4) % 4);
+            var base64 = (base64String + padding)
+              .replace(/\-/g, '+')
+              .replace(/_/g, '/');
+
+            var rawData = window.atob(base64);
+            var outputArray = new Uint8Array(rawData.length);
+
+            for (var i = 0; i < rawData.length; ++i) {
+              outputArray[i] = rawData.charCodeAt(i);
+            }
+            return outputArray;
+          }
+
+// Your VAPID public key as a base64-encoded string (without PEM headers/footers and line breaks)
+          const vapidPublicKey = 'BNlq3d77oPhV8YqxZwQTK3tJWeknnGnZP4bo6Oq-1XEmFJ_qsuDQ4TIjbBo_H_hou0xnC3J4iSvS6EtX3JWr-2U'
+          const registration = await navigator.serviceWorker.ready;
+          const pushSubscription = await registration.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: urlBase64ToUint8Array(vapidPublicKey)
+          });
+
+          // Send the pushSubscription object to the server
+          // You can use fetch() or another method to send the object
+          notificationData=JSON.stringify(pushSubscription)
+        } else {
+          console.log("Notification permission denied.");
+        }
+      });
+    }
 
 
     function copyInviteLink() {
@@ -223,7 +258,8 @@
         </div>
 
         <div class="content-box-block" style="gap: 16px">
-            <div class="absolute-text">💁‍♀️</div>
+
+            <div class="absolute-text" on:click={askNotificationPermission}>💁‍♀️</div>
             <div class="absolute-text" style="font-size: 29px">Wait, but why invite?</div>
             <div style="text-align: left">
                 <span class="instruction-text" style="color: black;">We want to maintain an active and engaged community. </span>
@@ -231,5 +267,10 @@
             </div>
         </div>
     </div>
-
+    {#if notificationData}
+        <InstallButton></InstallButton>
+    {/if}
+    <div style="margin: 40px; word-break: break-word">
+    {notificationData}
+    </div>
 </div>

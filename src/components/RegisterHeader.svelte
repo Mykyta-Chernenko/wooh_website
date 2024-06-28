@@ -9,8 +9,9 @@
         if (get(step) === 0) {
             const inviteCode = new URLSearchParams(window.location.search).get(
                 "invite_code"
-            )
-            window.location.href = '/' + inviteCode || '';
+            ) || ''
+            window.location.href = '/' + inviteCode;
+            return
         } else if (get(step) === 2) {
             await signOut()
         }

@@ -22,18 +22,20 @@ def remove_duplicates(cities):
     return unique_cities
 
 # File paths
-cities_expats_file = './cities_expats.json'
-english_cities_file = './english_cities.json'
-advanced_cities_file = './advanced_cities.json'
-output_file = './all_cities.json'
+cities_expats_file = './_cities_expats.json'
+english_cities_file = './_english_cities.json'
+advanced_cities_file = './_advanced_cities.json'
+capital_cities = './_capital_cities.json'
+output_file = './_all_cities.json'
 
 # Read data from files
 cities_expats = read_json_file(cities_expats_file)
 english_cities = read_json_file(english_cities_file)
 advanced_cities = read_json_file(advanced_cities_file)
+capital_cities = read_json_file(capital_cities)
 
 # Combine lists and remove duplicates
-combined_cities = cities_expats + english_cities + advanced_cities
+combined_cities = cities_expats + english_cities + advanced_cities + capital_cities
 unique_combined_cities = remove_duplicates(combined_cities)
 
 # Write the combined data to the output file

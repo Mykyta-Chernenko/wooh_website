@@ -6,7 +6,7 @@ with open('./_template.html', 'r') as file:
     template = file.read()
 
 # Step 2: Load cities.json
-with open('./all_cities.json', 'r') as file:
+with open('./_all_cities.json', 'r') as file:
     cities = json.load(file)
 
 # Step 3: Create new HTML files and collect URLs for sitemap

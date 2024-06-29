@@ -1,6 +1,7 @@
 import json
 import re
-
+import os
+import random
 # Step 1: Read the template.html file
 with open('./_template.html', 'r') as file:
     template = file.read()
@@ -15,18 +16,32 @@ urls = []
 for entry in cities:
     city = entry['city']
     country = entry['country']
-    city_underscore = re.sub(r'\s+', '_', country.lower()) + '_' + re.sub(r'\s+', '_', city.lower())
+    country_underscore = re.sub(r'\s+', '-', country.lower())
+    city_underscore = re.sub(r'\s+', '-', city.lower())
+    url = f'https://wooh.app/{country_underscore}/{city_underscore}'
 
+
+    other_cities = random.sample(cities, 20)
+    other_cities_references = ''
+    for c in other_cities:
+        city = c['city']
+        country = c['country']
+        country_underscore = re.sub(r'\s+', '-', country.lower())
+        city_underscore = re.sub(r'\s+', '-', city.lower())
+        url = f'https://wooh.app/{country_underscore}/{city_underscore}'
+        other_cities_references += f'''<div class="tag" style="cursor: pointer; margin: 5px; transform: none">
+                                                      <a href="{url}">{city}, {country}</a>
+                                                  </div>'''
     # Replace placeholders in the template
-    new_content = template.replace('$CITY', city).replace('$COUNTRY', country)
+    new_content = template.replace('$CITY', city).replace('$COUNTRY', country).replace("$OTHER_CITIES", other_cities_references)
 
     # Save the new HTML file
-    new_filename = f'./{city_underscore}.html'
+    new_filename = f'./{country_underscore}/{city_underscore}.html'
+    os.makedirs(f'./{country_underscore}', exist_ok=True)
     with open(new_filename, 'w') as new_file:
         new_file.write(new_content)
 
     # Collect the URL for sitemap
-    url = f'https://wooh.app/{city_underscore}'
     urls.append(url)
 
 # Step 4: Update sitemap.xml

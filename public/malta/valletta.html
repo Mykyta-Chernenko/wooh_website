@@ -67,19 +67,19 @@
     </script>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        var CITY = "Valletta";
+        setTimeout(() => {
+          mixpanel.init('28371becc02343d0e56b33253c857292', {
+            debug: true,
+            track_pageview: true,
+            persistence: 'localStorage'
+          });
 
-        mixpanel.init('28371becc02343d0e56b33253c857292', {
-          debug: true,
-          track_pageview: true,
-          persistence: 'localStorage'
-        });
+          mixpanel.identify(mixpanel.get_distinct_id());
 
-        mixpanel.identify(mixpanel.get_distinct_id());
-
-        mixpanel.track('SEOPageLoaded', {
-          city: CITY
-        });
+          mixpanel.track('SEOPageLoaded', {
+            city: "Valletta"
+          });
+        }, 1000);
       });
     </script>
 </head>
@@ -314,43 +314,43 @@
     <div class="block-container">
         <h2>Check out our other cities</h2>
         <div style="display: flex;flex-direction: row; flex-wrap: wrap; margin-top: 20px"><div class="tag" style="cursor: pointer; margin: 5px; transform: none">
-                                                      <a href="https://wooh.app/india/new-delhi">New Delhi, India</a>
+                                                      <a href="https://wooh.app/united-states/homestead">Homestead, United States</a>
                                                   </div><div class="tag" style="cursor: pointer; margin: 5px; transform: none">
-                                                      <a href="https://wooh.app/united-states/elk-grove">Elk Grove, United States</a>
+                                                      <a href="https://wooh.app/sweden/malmo">Malmo, Sweden</a>
                                                   </div><div class="tag" style="cursor: pointer; margin: 5px; transform: none">
-                                                      <a href="https://wooh.app/united-states/concord">Concord, United States</a>
+                                                      <a href="https://wooh.app/united-states/tulsa">Tulsa, United States</a>
                                                   </div><div class="tag" style="cursor: pointer; margin: 5px; transform: none">
-                                                      <a href="https://wooh.app/mali/bamako">Bamako, Mali</a>
+                                                      <a href="https://wooh.app/united-states/lynwood">Lynwood, United States</a>
+                                                  </div><div class="tag" style="cursor: pointer; margin: 5px; transform: none">
+                                                      <a href="https://wooh.app/united-states/mcallen">McAllen, United States</a>
+                                                  </div><div class="tag" style="cursor: pointer; margin: 5px; transform: none">
+                                                      <a href="https://wooh.app/united-kingdom/leeds">Leeds, United Kingdom</a>
                                                   </div><div class="tag" style="cursor: pointer; margin: 5px; transform: none">
                                                       <a href="https://wooh.app/united-states/charleston">Charleston, United States</a>
                                                   </div><div class="tag" style="cursor: pointer; margin: 5px; transform: none">
-                                                      <a href="https://wooh.app/united-states/topeka">Topeka, United States</a>
+                                                      <a href="https://wooh.app/united-states/harlingen">Harlingen, United States</a>
                                                   </div><div class="tag" style="cursor: pointer; margin: 5px; transform: none">
-                                                      <a href="https://wooh.app/united-states/raleigh">Raleigh, United States</a>
+                                                      <a href="https://wooh.app/haiti/port-au-prince">Port-au-Prince, Haiti</a>
                                                   </div><div class="tag" style="cursor: pointer; margin: 5px; transform: none">
-                                                      <a href="https://wooh.app/bosnia-and-herzegovina/sarajevo">Sarajevo, Bosnia and Herzegovina</a>
+                                                      <a href="https://wooh.app/japan/tokyo">Tokyo, Japan</a>
                                                   </div><div class="tag" style="cursor: pointer; margin: 5px; transform: none">
-                                                      <a href="https://wooh.app/china/guangzhou">Guangzhou, China</a>
+                                                      <a href="https://wooh.app/iran/tehran">Tehran, Iran</a>
                                                   </div><div class="tag" style="cursor: pointer; margin: 5px; transform: none">
-                                                      <a href="https://wooh.app/lebanon/beirut">Beirut, Lebanon</a>
+                                                      <a href="https://wooh.app/united-states/san-angelo">San Angelo, United States</a>
                                                   </div><div class="tag" style="cursor: pointer; margin: 5px; transform: none">
-                                                      <a href="https://wooh.app/italy/florence">Florence, Italy</a>
+                                                      <a href="https://wooh.app/south-korea/seoul">Seoul, South Korea</a>
                                                   </div><div class="tag" style="cursor: pointer; margin: 5px; transform: none">
-                                                      <a href="https://wooh.app/solomon-islands/honiara">Honiara, Solomon Islands</a>
+                                                      <a href="https://wooh.app/chad/n'djamena">N'Djamena, Chad</a>
                                                   </div><div class="tag" style="cursor: pointer; margin: 5px; transform: none">
-                                                      <a href="https://wooh.app/united-states/saginaw">Saginaw, United States</a>
+                                                      <a href="https://wooh.app/united-states/mountain-view">Mountain View, United States</a>
                                                   </div><div class="tag" style="cursor: pointer; margin: 5px; transform: none">
-                                                      <a href="https://wooh.app/cambodia/phnom-penh">Phnom Penh, Cambodia</a>
+                                                      <a href="https://wooh.app/spain/seville">Seville, Spain</a>
                                                   </div><div class="tag" style="cursor: pointer; margin: 5px; transform: none">
-                                                      <a href="https://wooh.app/cameroon/yaounde">Yaounde, Cameroon</a>
+                                                      <a href="https://wooh.app/liberia/monrovia">Monrovia, Liberia</a>
                                                   </div><div class="tag" style="cursor: pointer; margin: 5px; transform: none">
-                                                      <a href="https://wooh.app/united-kingdom/bradford">Bradford, United Kingdom</a>
+                                                      <a href="https://wooh.app/south-africa/pretoria">Pretoria, South Africa</a>
                                                   </div><div class="tag" style="cursor: pointer; margin: 5px; transform: none">
-                                                      <a href="https://wooh.app/united-states/santa-clara">Santa Clara, United States</a>
-                                                  </div><div class="tag" style="cursor: pointer; margin: 5px; transform: none">
-                                                      <a href="https://wooh.app/saudi-arabia/dammam">Dammam, Saudi Arabia</a>
-                                                  </div><div class="tag" style="cursor: pointer; margin: 5px; transform: none">
-                                                      <a href="https://wooh.app/united-states/fishers">Fishers, United States</a>
+                                                      <a href="https://wooh.app/united-states/hoboken">Hoboken, United States</a>
                                                   </div><div class="tag" style="cursor: pointer; margin: 5px; transform: none">
                                                       <a href="https://wooh.app/malta/valletta">Valletta, Malta</a>
                                                   </div></div>
